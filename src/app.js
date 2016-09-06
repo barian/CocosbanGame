@@ -9,7 +9,7 @@ var level = [
   [1, 0, 0, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1]
 ];
-
+var map = 0;
 var playerPosition; //マップ内のプレイやの位置(ｘ、ｙ)を保持する
 var playerSprite; //プレイヤーのスプライト
 var cratesArray = []; //配置した木箱のスプライトを配列に保持する
@@ -56,14 +56,37 @@ var gameLayer = cc.Layer.extend({
     rp_png.setPosition( 60, 100);
     rp_png.setScale(0.5);
     this.addChild(rp_png);
-
     for (i = 0; i < 7; i++) {　　　　　　
-      cratesArray[i] = [];　 //配列オブジェクトの生成
-      for (j = 0; j < 7; j++) {
+      for (j = 0; j < 9; j++) {
         switch (level[i][j]) {
+          case 0:
+          case 3:
+          case 4:
+            groundSprite = cc.Sprite.create(cache.getSpriteFrame("ground.png"));
+            groundSprite.setPosition(165 + 25 * j, 185 - 25 * i);
+            groundSprite.setScale(5);
+            this.addChild(groundSprite);
+            break;
+          case 1:
+            wallSprite = cc.Sprite.create(cache.getSpriteFrame("wall.png"));
+            wallSprite.setPosition(165 + 25 * j, 185 - 25 * i);
+            wallSprite.setScale(5);
+            this.addChild(wallSprite);
+            break;
           case 2:
+            holeSprite = cc.Sprite.create(cache.getSpriteFrame("hole.png"));
+            holeSprite.setPosition(165 + 25 * j, 185 - 25 * i);
+            holeSprite.setScale(5);
+            this.addChild(holeSprite);
             cflag+=1;
           break;
+        }
+      }
+    }
+    for (i = 0; i < 7; i++) {　　　　　　
+      cratesArray[i] = [];　 //配列オブジェクトの生成
+      for (j = 0; j < 9; j++) {
+        switch (level[i][j]) {
           case 4:
           case 6:
             playerSprite = cc.Sprite.create(cache.getSpriteFrame("player.png"));
@@ -110,15 +133,39 @@ var listener2 = cc.EventListener.create({
             var targetSize = target.getContentSize();
             var targetRectangle = cc.rect(0, 0, targetSize.width, targetSize.height);
             if (cc.rectContainsPoint(targetRectangle, location)) {
-              level = [
-                [1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 0, 0, 0, 0, 1],
-                [1, 0, 3, 0, 2, 0, 1],
-                [1, 0, 0, 4, 0, 0, 1],
-                [1, 0, 3, 0, 2, 0, 1],
-                [1, 0, 0, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1]
-              ];
+              if(map == 0){
+                level = [
+                  [1, 1, 1, 1, 1, 1, 1],
+                  [1, 1, 0, 0, 0, 0, 1],
+                  [1, 0, 3, 0, 2, 0, 1],
+                  [1, 0, 0, 4, 0, 0, 1],
+                  [1, 0, 3, 0, 2, 0, 1],
+                  [1, 0, 0, 1, 1, 1, 1],
+                  [1, 1, 1, 1, 1, 1, 1]
+                ];
+              }
+              if(map == 1){
+                level = [
+                  [1, 1, 1, 1, 1, 1, 1,1],
+                  [1, 1, 1, 0, 0, 0, 0,1],
+                  [1, 0, 3, 0, 2, 2, 0,1],
+                  [1, 0, 0, 4, 3, 0, 0,1],
+                  [1, 0, 3, 0, 2, 0, 0,1],
+                  [1, 0, 0, 1, 1, 1, 0,1],
+                  [1, 1, 1, 1, 1, 1, 1,1]
+                ];
+              }
+              if(map == 2){
+                level = [
+                  [1, 1, 1, 1, 1, 1, 1,1,1],
+                  [1, 1, 1, 1, 0, 0, 0,0,1],
+                  [1, 0, 3, 2, 0, 2, 0,0,1],
+                  [1, 0, 0, 4, 0, 3, 3,0,1],
+                  [1, 0, 3, 0, 2, 2, 0,0,1],
+                  [1, 0, 0, 1, 1, 1, 0,0,1],
+                  [1, 1, 1, 1, 1, 1, 1,1,1]
+                ];
+              }
               cflag = 0;
               gameflag = 0;
               cc.director.runScene(new gameScene());

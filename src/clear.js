@@ -12,39 +12,72 @@ var OverLayer = cc.Layer.extend({
         scoreText = cc.LabelTTF.create("ゲームクリアー" ,"Arial","30",cc.TEXT_ALIGNMENT_CENTER);
         this.addChild(scoreText);
         scoreText.setPosition(size.width / 2, size.height / 2);
-        level = [
-          [1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 0, 0, 0, 0, 1],
-          [1, 0, 3, 0, 2, 0, 1],
-          [1, 0, 0, 4, 0, 0, 1],
-          [1, 0, 3, 0, 2, 0, 1],
-          [1, 0, 0, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1]
-        ];
-        cflag = 0;
-        gameflag = 0;
-        // タップイベントリスナーを登録する
-        cc.eventManager.addListener({
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            swallowTouches: true,
-            onTouchBegan: this.onTouchBegan,
-            onTouchMoved: this.onTouchMoved,
-            onTouchEnded: this.onTouchEnded
-        }, this);
+        for(i=0;i<3;i++){
+          var rp = new mode();
+          rp.pictureValue = i;
+          rp.setPosition( 60, 80*(i+1));
+          rp.setScale(0.5);
+          this.addChild(rp);
+        }
+      }
 
-        return true;
-    },
-
-    onTouchBegan: function(touch, event) {
-        return true;
-    },
-    onTouchMoved: function(touch, event) {},
-    onTouchEnded: function(touch, event) {
-        // 次のシーンに切り替える
-        cc.director.runScene(new gameScene());
-    },
 });
-
+var mode = cc.Sprite.extend({
+    ctor:function() {
+        this._super();
+        this.initWithFile(res.rp_png);
+        cc.eventManager.addListener(listener3.clone(), this);
+    }
+});
+var listener3 = cc.EventListener.create({
+    event: cc.EventListener.TOUCH_ONE_BY_ONE,
+    swallowTouches: true,
+    onTouchBegan: function (touch, event) {
+            var target = event.getCurrentTarget();
+            var location = target.convertToNodeSpace(touch.getLocation());
+            var targetSize = target.getContentSize();
+            var targetRectangle = cc.rect(0, 0, targetSize.width, targetSize.height);
+            if (cc.rectContainsPoint(targetRectangle, location)) {
+              if(target.pictureValue == 0){
+                level = [
+                  [1, 1, 1, 1, 1, 1, 1],
+                  [1, 1, 0, 0, 0, 0, 1],
+                  [1, 0, 3, 0, 2, 0, 1],
+                  [1, 0, 0, 4, 0, 0, 1],
+                  [1, 0, 3, 0, 2, 0, 1],
+                  [1, 0, 0, 1, 1, 1, 1],
+                  [1, 1, 1, 1, 1, 1, 1]
+                ];
+              }
+              if(target.pictureValue == 1){
+                level = [
+                  [1, 1, 1, 1, 1, 1, 1,1],
+                  [1, 1, 1, 0, 0, 0, 0,1],
+                  [1, 0, 3, 0, 2, 2, 0,1],
+                  [1, 0, 0, 4, 3, 0, 0,1],
+                  [1, 0, 3, 0, 2, 0, 0,1],
+                  [1, 0, 0, 1, 1, 1, 0,1],
+                  [1, 1, 1, 1, 1, 1, 1,1]
+                ];
+              }
+              if(target.pictureValue == 2){
+                level = [
+                  [1, 1, 1, 1, 1, 1, 1,1,1],
+                  [1, 1, 1, 1, 0, 0, 0,0,1],
+                  [1, 0, 3, 2, 0, 2, 0,0,1],
+                  [1, 0, 0, 4, 0, 3, 3,0,1],
+                  [1, 0, 3, 0, 2, 2, 0,0,1],
+                  [1, 0, 0, 1, 1, 1, 0,0,1],
+                  [1, 1, 1, 1, 1, 1, 1,1,1]
+                ];
+              }
+              map = target.pictureValue;
+              cflag = 0;
+              gameflag = 0;
+              cc.director.runScene(new gameScene());
+            }
+    }
+});
 var OverScene = cc.Scene.extend({
     onEnter: function() {
         this._super();

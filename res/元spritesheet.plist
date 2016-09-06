@@ -28,49 +28,10 @@
                 <key>sourceSize</key>
                 <string>{96,64}</string>
             </dict>
-            <key>wall.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,68},{5,5}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{5,5}}</string>
-                <key>sourceSize</key>
-                <string>{5,5}</string>
-            </dict>
-            <key>ground.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{9,68},{5,5}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{5,5}}</string>
-                <key>sourceSize</key>
-                <string>{5,5}</string>
-            </dict>
-            <key>hole.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{16,68},{5,5}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{5,5}}</string>
-                <key>sourceSize</key>
-                <string>{5,5}</string>
-            </dict>
             <key>crate.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{23,68},{5,5}}</string>
+                <string>{{39,68},{5,5}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -79,11 +40,24 @@
                 <string>{{0,0},{5,5}}</string>
                 <key>sourceSize</key>
                 <string>{5,5}</string>
+            </dict>
+            <key>level.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,68},{35,35}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,35}}</string>
+                <key>sourceSize</key>
+                <string>{35,35}</string>
             </dict>
             <key>player.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{30,68},{5,5}}</string>
+                <string>{{39,75},{5,5}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
