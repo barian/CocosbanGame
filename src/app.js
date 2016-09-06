@@ -52,7 +52,7 @@ var gameLayer = cc.Layer.extend({
     levelSprite.setScale(5);
     this.addChild(levelSprite);
 
-    var rp_png = cc.Sprite.create(res.rp_png);
+    var rp_png = new retry();
     rp_png.setPosition( 60, 100);
     rp_png.setScale(0.5);
     this.addChild(rp_png);
@@ -94,18 +94,50 @@ var gameLayer = cc.Layer.extend({
     cc.eventManager.addListener(listener, this);
   },
 });
+var retry = cc.Sprite.extend({
+    ctor:function() {
+        this._super();
+        this.initWithFile(res.rp_png);
+        cc.eventManager.addListener(listener2.clone(), this);
+    }
+});
+var listener2 = cc.EventListener.create({
+    event: cc.EventListener.TOUCH_ONE_BY_ONE,
+    swallowTouches: true,
+    onTouchBegan: function (touch, event) {
+            var target = event.getCurrentTarget();
+            var location = target.convertToNodeSpace(touch.getLocation());
+            var targetSize = target.getContentSize();
+            var targetRectangle = cc.rect(0, 0, targetSize.width, targetSize.height);
+            if (cc.rectContainsPoint(targetRectangle, location)) {
+              level = [
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0, 0, 1],
+                [1, 0, 3, 0, 2, 0, 1],
+                [1, 0, 0, 4, 0, 0, 1],
+                [1, 0, 3, 0, 2, 0, 1],
+                [1, 0, 0, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1]
+              ];
+              cflag = 0;
+              gameflag = 0;
+              cc.director.runScene(new gameScene());
+              console.log("1");
+            }
+    }
+});
 
 var listener = cc.EventListener.create({
-event: cc.EventListener.TOUCH_ONE_BY_ONE,
-swallowTouches: true,
-onTouchBegan:function (touch,event) {
-startTouch = touch.getLocation();
-return true;
-},
-onTouchEnded:function(touch, event){
-endTouch = touch.getLocation();
-swipeDirection();
-}
+  event: cc.EventListener.TOUCH_ONE_BY_ONE,
+  swallowTouches: true,
+  onTouchBegan:function (touch,event) {
+    startTouch = touch.getLocation();
+    return true;
+  },
+  onTouchEnded:function(touch, event){
+    endTouch = touch.getLocation();
+    swipeDirection();
+  }
 });
 //スワイプ方向を検出する処理
 function swipeDirection(){
