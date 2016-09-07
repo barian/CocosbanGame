@@ -7,6 +7,7 @@ var res = {
     easy : "res/easy.png",
     nomal : "res/nomal.png",
     hard : "res/hard.png",
+    back : "res/back.png",
 };
 
 var g_resources = [];

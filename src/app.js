@@ -9,13 +9,17 @@ var level = [
   [1, 0, 0, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1]
 ];
-var map = 0;
+
+var back_level = [];
+var back_crates = [];
+
+var map = 0;    //マップ選択
 var playerPosition; //マップ内のプレイやの位置(ｘ、ｙ)を保持する
 var playerSprite; //プレイヤーのスプライト
 var cratesArray = []; //配置した木箱のスプライトを配列に保持する
+var cflag=0;      //ゲームクリアーフラグ
+var gameflag=0;   //箱が穴に入っているかのフラグ
 
-var cflag=0;
-var gameflag=0;
 var startTouch;
 var endTouch;
 var swipeTolerance = 10;//スワイプかを判断する閾値
@@ -54,11 +58,16 @@ var gameLayer = cc.Layer.extend({
     levelSprite.setPosition(240, 110);
     levelSprite.setScale(5);
     this.addChild(levelSprite);
-
+    //リセットボタンの追加
     var rp_png = new retry();
     rp_png.setPosition( 60, 100);
     rp_png.setScale(0.5);
     this.addChild(rp_png);
+    //バックボタンの追加
+    var back_button = new back();
+    back_button.setPosition( 60,50);
+    back_button.setScale(0.5);
+    this.addChild(back_button);
     for (i = 0; i < 7; i++) {　　　　　　
       for (j = 0; j < 9; j++) {
         switch (level[i][j]) {
@@ -119,18 +128,68 @@ var gameLayer = cc.Layer.extend({
     //return true;
     cc.eventManager.addListener(listener, this);
   },
-  playSe: function() {
-    this.audioEngine.playEffect(res.reg_se);
-  },
+
 });
+//リセットボタンの拡張
 var retry = cc.Sprite.extend({
     ctor:function() {
         this._super();
         this.initWithFile(res.rp_png);
-        cc.eventManager.addListener(listener2.clone(), this);
+        cc.eventManager.addListener(reset, this);
     }
 });
-var listener2 = cc.EventListener.create({
+//バックボタンの拡張
+var back = cc.Sprite.extend({
+    ctor:function() {
+        this._super();
+        this.initWithFile(res.back);
+        cc.eventManager.addListener(back_go, this);
+    }
+});
+var back_go = cc.EventListener.create({
+    event: cc.EventListener.TOUCH_ONE_BY_ONE,
+    swallowTouches: true,
+    onTouchBegan: function (touch, event) {
+            var target = event.getCurrentTarget();
+            var location = target.convertToNodeSpace(touch.getLocation());
+            var targetSize = target.getContentSize();
+            var targetRectangle = cc.rect(0, 0, targetSize.width, targetSize.height);
+            if (cc.rectContainsPoint(targetRectangle, location)) {
+              for (var i = 0; i < 7; i++){
+                  for (var j = 0; j < 7; j++){
+                    var copy1 = back_level[i][j];
+                    level[i][j] = copy1;
+                    switch (level[i][j]) {
+                      case 4:
+                      case 6:
+                      playerSprite.setPosition(165 + 25 * j, 185 - 25 * i);
+                      playerPosition = {
+                        x: j,
+                        y: i
+                      };
+                      var copy2 = back_crates[i][j];
+                      cratesArray[i][j] = copy2;
+                      break;
+                      case 3:
+                      case 5:
+                      var copy2 = back_crates[i][j];
+                      cratesArray[i][j] = copy2;
+                      var crateSprite = cratesArray[i][j];
+
+                      crateSprite.setPosition(165 + 25 * j, 185 - 25 * i);
+                      break;
+                      default:
+                      var copy2 = back_crates[i][j];
+                      cratesArray[i][j] = copy2;
+                      break;
+                    }
+                  }
+              }
+            }
+    }
+});
+
+var reset = cc.EventListener.create({
     event: cc.EventListener.TOUCH_ONE_BY_ONE,
     swallowTouches: true,
     onTouchBegan: function (touch, event) {
@@ -175,7 +234,6 @@ var listener2 = cc.EventListener.create({
               cflag = 0;
               gameflag = 0;
               cc.director.runScene(new gameScene());
-              console.log("1");
             }
     }
 });
@@ -229,6 +287,7 @@ function swipeDirection(){
 }
 
 function move(deltaX,deltaY){
+  back_up();
 switch(level[playerPosition.y+deltaY][playerPosition.x+deltaX]){
     case 0:
     case 2:
@@ -270,4 +329,18 @@ switch(level[playerPosition.y+deltaY][playerPosition.x+deltaX]){
         }
         break;
     }
+}
+//一つ戻るためのバックアップ
+function back_up(){
+  for ( var i = 0;i < 7; i++){
+    back_level[i] = [];
+    back_crates[i] = [];
+    for ( var j = 0; j < 7; j++){
+      var copy1 = level[i][j];
+      back_level[i][j] = copy1;
+      console.log(back_level[i][j]);
+      var copy2 = cratesArray[i][j];
+      back_crates[i][j] = copy2;
+    }
+  }
 }
