@@ -1,3 +1,4 @@
+var i;
 var OverLayer = cc.Layer.extend({
     ctor: function() {
         this._super();
@@ -25,7 +26,9 @@ var OverLayer = cc.Layer.extend({
 var mode = cc.Sprite.extend({
     ctor:function() {
         this._super();
-        this.initWithFile(res.rp_png);
+        if(i==0)this.initWithFile(res.easy);
+        if(i==1)this.initWithFile(res.nomal);
+        if(i==2)this.initWithFile(res.hard);
         cc.eventManager.addListener(listener3.clone(), this);
     }
 });

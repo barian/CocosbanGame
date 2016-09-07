@@ -24,6 +24,8 @@ var gameScene = cc.Scene.extend({
   onEnter: function() {
     this._super();
 
+    audioEngine = cc.audioEngine;
+
     var layer0 = new gameLayer();
     layer0.init();
     this.addChild(layer0);
@@ -41,6 +43,7 @@ var gameLayer = cc.Layer.extend({
     var backgroundSprite = cc.Sprite.create(cache.getSpriteFrame("background.png"));
     //アンチエイリアス処理を止める
     backgroundSprite.getTexture().setAliasTexParameters();
+
 
     backgroundSprite.setPosition(240, 160);
     //スプライトがとても小さいので拡大する
@@ -115,6 +118,9 @@ var gameLayer = cc.Layer.extend({
     }
     //return true;
     cc.eventManager.addListener(listener, this);
+  },
+  playSe: function() {
+    this.audioEngine.playEffect(res.reg_se);
   },
 });
 var retry = cc.Sprite.extend({
@@ -230,6 +236,7 @@ switch(level[playerPosition.y+deltaY][playerPosition.x+deltaX]){
         playerPosition.x+=deltaX;
         playerPosition.y+=deltaY;
         level[playerPosition.y][playerPosition.x]+=4;
+        audioEngine.playEffect(res.reg_se);
         playerSprite.setPosition(165+25*playerPosition.x,185-25*playerPosition.y);
     break;
     case 3:
@@ -247,6 +254,7 @@ switch(level[playerPosition.y+deltaY][playerPosition.x+deltaX]){
             playerSprite.setPosition(165+25*playerPosition.x,185-25*playerPosition.y);
             level[playerPosition.y+deltaY][playerPosition.x+deltaX]+=3;
             //console.log(level[playerPosition.y+deltaY][playerPosition.x+deltaX]);木箱移動後
+            audioEngine.playEffect(res.hako_se);
             if(level[playerPosition.y+deltaY][playerPosition.x+deltaX]==5){
               gameflag += 1;
               if(gameflag == cflag){
