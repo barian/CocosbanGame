@@ -8,6 +8,8 @@ var res = {
     nomal : "res/nomal.png",
     hard : "res/hard.png",
     back : "res/back.png",
+    description_png : "res/Description.png",
+    title_png : "res/title.png",
 };
 
 var g_resources = [];
