@@ -10,6 +10,7 @@ var res = {
     back : "res/back.png",
     description_png : "res/Description.png",
     title_png : "res/title.png",
+    ura : "res/ura.png",
 };
 
 var g_resources = [];

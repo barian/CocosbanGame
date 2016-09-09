@@ -158,7 +158,8 @@ var title_go = cc.EventListener.create({
             var targetSize = target.getContentSize();
             var targetRectangle = cc.rect(0, 0, targetSize.width, targetSize.height);
             if (cc.rectContainsPoint(targetRectangle, location)) {
-              cc.director.runScene(new TitleScene());
+              var titlescene = cc.TransitionFadeDown.create(0.5, new TitleScene());
+              cc.director.runScene(titlescene);
             }
     }
 });
@@ -249,6 +250,7 @@ var reset = cc.EventListener.create({
               }
               cflag = 0;
               gameflag = 0;
+              
               cc.director.runScene(new gameScene());
             }
     }
@@ -349,7 +351,8 @@ switch(level[playerPosition.y+deltaY][playerPosition.x+deltaX]){
           case 5:
           gameflag += 1;
           if(gameflag == cflag){
-            cc.director.runScene(new OverScene());
+            var clearscene = cc.TransitionFadeDown.create(0.5, new OverScene());
+            cc.director.runScene(clearscene);
           }
           break;
       }

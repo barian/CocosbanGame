@@ -1,3 +1,4 @@
+
 var TitleLayer = cc.Layer.extend({
     ctor: function() {
         this._super();
@@ -11,8 +12,8 @@ var TitleLayer = cc.Layer.extend({
         */
         //難易度の表示
         var title = cc.Sprite.create(res.description_png);
-        title.setPosition(size.width / 2, size.height/1.65);
-        title.setScale(0.725,0.6);
+        title.setPosition(size.width / 2, size.height/2);
+        title.setScale(0.5);
         this.addChild(title);
         for(i=0;i<3;i++){
           var rp = new mode();
@@ -80,7 +81,8 @@ var lis = cc.EventListener.create({
               map = target.pictureValue;
               cflag = 0;
               gameflag = 0;
-              cc.director.runScene(new gameScene());
+              var gamescene = cc.TransitionFadeDown.create(0.5, new gameScene());
+              cc.director.runScene(gamescene);
             }
     }
 });
